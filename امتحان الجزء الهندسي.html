@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>اختبار القدرات الهندسية | المدربة أم هشام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12302e;
+    --ink-soft:#3b5957;
+    --paper:#f6f4ee;
+    --card:#ffffff;
+    --teal:#0f6e64;
+    --teal-deep:#0a4b44;
+    --teal-pale:#e4f1ee;
+    --gold:#c08a2e;
+    --gold-pale:#faf1de;
+    --line:#e1ddd0;
+    --danger:#b3402f;
+    --danger-pale:#fbe9e5;
+    --ok:#227a52;
+    --ok-pale:#e6f4ec;
+    --warn:#c08a2e;
+    --radius:14px;
+    --shadow:0 4px 18px rgba(18,48,46,.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    font-family:'Tajawal','Cairo',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position:center;
+  }
+  h1,h2,h3,.brand{font-family:'Cairo',sans-serif;}
+  bdi{unicode-bidi:isolate;}
+  .app{max-width:760px;margin:0 auto;min-height:100vh;padding:18px 16px 60px;}
+
+  /* ---------- Brand header ---------- */
+  .brandbar{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 4px 18px;
+  }
+  .brandmark{
+    width:46px;height:46px;border-radius:12px;
+    background:linear-gradient(135deg,var(--teal),var(--teal-deep));
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .brandmark svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;}
+  .brandtext .name{font-weight:800;font-size:17px;color:var(--teal-deep);line-height:1.2;}
+  .brandtext .tag{font-size:12.5px;color:var(--ink-soft);}
+
+  /* ---------- Landing ---------- */
+  .landing-card{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:34px 26px;box-shadow:var(--shadow);text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .landing-card::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:6px;
+    background:linear-gradient(90deg,var(--gold),var(--teal));
+  }
+  .eyebrow{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.3px;margin-bottom:6px;}
+  .landing-title{font-size:26px;font-weight:900;color:var(--teal-deep);margin:2px 0 8px;}
+  .landing-sub{color:var(--ink-soft);font-size:15px;line-height:1.9;max-width:480px;margin:0 auto 22px;}
+  .stat-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:26px;}
+  .stat{
+    background:var(--teal-pale);border:1px solid #cfe6e1;border-radius:12px;
+    padding:12px 18px;min-width:110px;
+  }
+  .stat .num{font-weight:900;font-size:22px;color:var(--teal-deep);}
+  .stat .lbl2{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+  .rules{
+    text-align:right;background:var(--gold-pale);border:1px solid #ecd9b0;
+    border-radius:12px;padding:16px 18px;margin-bottom:26px;font-size:14px;color:#6b4d17;line-height:2;
+  }
+  .rules b{color:#563c10;}
+  .btn{
+    appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;
+    border-radius:12px;padding:15px 28px;font-size:16px;transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 16px rgba(15,110,100,.32);width:100%;}
+  .btn-primary:hover{background:var(--teal-deep);}
+  .btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+  .btn-danger{background:var(--danger);color:#fff;}
+  .btn-outline-danger{background:#fff;border:1.5px solid var(--danger);color:var(--danger);}
+
+  /* ---------- Exam header ---------- */
+  .exambar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:12px 16px;margin-bottom:16px;box-shadow:var(--shadow);
+    position:sticky;top:10px;z-index:5;
+  }
+  .qcount{font-weight:800;color:var(--teal-deep);font-size:15px;}
+  .qcount small{color:var(--ink-soft);font-weight:500;}
+  .timer{
+    display:flex;align-items:center;gap:6px;font-weight:800;color:var(--teal-deep);
+    background:var(--teal-pale);padding:7px 12px;border-radius:10px;font-size:15px;
+  }
+  .timer.low{background:var(--danger-pale);color:var(--danger);}
+  .iconbtn{
+    width:38px;height:38px;border-radius:10px;border:1.5px solid var(--line);background:#fff;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  }
+  .iconbtn svg{width:18px;height:18px;stroke:var(--ink-soft);fill:none;stroke-width:2;}
+  .iconbtn.flagged{background:var(--gold-pale);border-color:var(--gold);}
+  .iconbtn.flagged svg{stroke:var(--gold);fill:var(--gold);}
+
+  .progress-outer{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:18px;}
+  .progress-inner{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));transition:width .25s ease;}
+
+  /* ---------- Nav grid ---------- */
+  .navgrid{
+    display:none;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:16px;margin-bottom:16px;box-shadow:var(--shadow);
+  }
+  .navgrid.open{display:block;}
+  .navgrid h3{margin:0 0 10px;font-size:14px;color:var(--teal-deep);}
+  .navlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin-bottom:12px;}
+  .legdot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-start:4px;vertical-align:middle;}
+  .navwrap{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;max-height:260px;overflow-y:auto;}
+  .navcell{
+    aspect-ratio:1;border-radius:8px;border:1.5px solid var(--line);background:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;cursor:pointer;
+    color:var(--ink-soft);position:relative;
+  }
+  .navcell.answered{background:var(--ok-pale);border-color:var(--ok);color:var(--ok);}
+  .navcell.current{outline:2px solid var(--teal);outline-offset:1px;}
+  .navcell.flagged::after{
+    content:"";position:absolute;top:-3px;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);
+  }
+
+  /* ---------- Question card ---------- */
+  .qcard{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:22px 20px;box-shadow:var(--shadow);margin-bottom:16px;
+  }
+  .qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .qnum-badge{
+    background:var(--teal-deep);color:#fff;font-weight:800;font-size:13px;
+    padding:4px 12px;border-radius:20px;
+  }
+  .qcat{font-size:12.5px;color:var(--gold);font-weight:700;}
+  .qtext{font-size:17px;font-weight:700;line-height:1.9;color:var(--ink);margin:6px 0 16px;}
+  .diagram{width:100%;max-width:280px;display:block;margin:6px auto 18px;}
+  .diagram *{fill:none;stroke:#0f6e64;stroke-width:2;}
+  .diagram text{fill:#12302e;stroke:none;font-size:13px;font-family:'Tajawal',sans-serif;font-weight:600;}
+  .diagram .fillmark{fill:#e4f1ee;stroke:#0f6e64;}
+  .diagram .accent{stroke:#c08a2e;stroke-dasharray:5,4;}
+  .diagram .thin{stroke-width:1.4;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;align-items:center;gap:12px;
+    border:1.6px solid var(--line);border-radius:12px;padding:13px 15px;cursor:pointer;
+    background:#fff;transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover{border-color:#bcd9d4;}
+  .opt .letter{
+    width:30px;height:30px;border-radius:9px;background:var(--teal-pale);color:var(--teal-deep);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .opt .otext{font-size:15.5px;font-weight:600;}
+  .opt.selected{border-color:var(--teal);background:var(--teal-pale);}
+  .opt.selected .letter{background:var(--teal);color:#fff;}
+
+  .opt.correct{border-color:var(--ok);background:var(--ok-pale);}
+  .opt.correct .letter{background:var(--ok);color:#fff;}
+  .opt.wrong{border-color:var(--danger);background:var(--danger-pale);}
+  .opt.wrong .letter{background:var(--danger);color:#fff;}
+
+  .explain{
+    margin-top:14px;background:var(--gold-pale);border-inline-start:4px solid var(--gold);
+    border-radius:10px;padding:12px 14px;font-size:14px;color:#6b4d17;line-height:1.9;display:none;
+  }
+  .explain.show{display:block;}
+
+  .navbtns{display:flex;gap:10px;margin-top:6px;}
+  .navbtns .btn{flex:1;}
+
+  /* ---------- Results ---------- */
+  .score-hero{
+    background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#fff;border-radius:20px;
+    padding:32px 24px;text-align:center;box-shadow:var(--shadow);margin-bottom:18px;
+  }
+  .score-hero .brand-small{font-size:13px;opacity:.85;margin-bottom:4px;}
+  .score-hero h2{font-size:20px;margin:0 0 14px;font-weight:800;}
+  .score-circle{
+    width:132px;height:132px;border-radius:50%;border:6px solid rgba(255,255,255,.25);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 12px;
+  }
+  .score-circle .pct{font-size:32px;font-weight:900;}
+  .score-circle .of{font-size:12px;opacity:.85;}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+  .rbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center;}
+  .rbox .n{font-size:22px;font-weight:900;}
+  .rbox .l{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .rbox.ok .n{color:var(--ok);}
+  .rbox.bad .n{color:var(--danger);}
+  .rbox.na .n{color:var(--ink-soft);}
+  .actionrow{display:flex;gap:10px;margin-bottom:20px;}
+  .actionrow .btn{flex:1;}
+
+  .review-item{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 16px;margin-bottom:12px;
+  }
+  .review-item .rtitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .review-item .rtag{font-size:12px;font-weight:800;padding:3px 10px;border-radius:20px;}
+  .rtag.ok{background:var(--ok-pale);color:var(--ok);}
+  .rtag.bad{background:var(--danger-pale);color:var(--danger);}
+  .rtag.na{background:#eee;color:#777;}
+  .review-item .rq{font-weight:700;font-size:15px;margin-bottom:6px;line-height:1.8;}
+  .review-item .rline{font-size:13.5px;color:var(--ink-soft);margin:3px 0;}
+  .review-item .rline b{color:var(--ink);}
+
+  .hidden{display:none !important;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:#c9c3af;border-radius:3px;}
+  @media(max-width:420px){
+    .navwrap{grid-template-columns:repeat(6,1fr);}
+    .result-grid{grid-template-columns:repeat(3,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* ============================= SVG HELPERS ============================= */
+function svgWrap(inner, vb){ return `<svg viewBox="${vb||'0 0 240 190'}" class="diagram">${inner}</svg>`; }
+function L(x1,y1,x2,y2,cls=''){ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls}"/>`; }
+function PG(pts,cls=''){ return `<polygon points="${pts}" class="${cls}"/>`; }
+function PL(pts,cls=''){ return `<polyline points="${pts}" class="${cls}"/>`; }
+function CI(cx,cy,r,cls=''){ return `<circle cx="${cx}" cy="${cy}" r="${r}" class="${cls}"/>`; }
+function TX(x,y,s,cls=''){ return `<text x="${x}" y="${y}" text-anchor="middle" class="${cls}">${s}</text>`; }
+function rightAngleMark(x,y,size,rot){
+  // simple small square marker; rot in {0,90,180,270} to orient corner
+  const s=size;
+  if(rot===0) return `<polyline points="${x},${y-s} ${x+s},${y-s} ${x+s},${y}" class="thin"/>`;
+  if(rot===90) return `<polyline points="${x-s},${y-s} ${x-s},${y} ${x},${y}" class="thin"/>`;
+  if(rot===180) return `<polyline points="${x-s},${y} ${x-s},${y+s} ${x},${y+s}" class="thin"/>`;
+  return `<polyline points="${x},${y+s} ${x+s},${y+s} ${x+s},${y}" class="thin"/>`;
+}
+function arc(cx,cy,r,a1,a2,cls=''){
+  const p1x=cx+r*Math.cos(a1*Math.PI/180), p1y=cy-r*Math.sin(a1*Math.PI/180);
+  const p2x=cx+r*Math.cos(a2*Math.PI/180), p2y=cy-r*Math.sin(a2*Math.PI/180);
+  const large = Math.abs(a2-a1)>180?1:0;
+  return `<path d="M ${p1x} ${p1y} A ${r} ${r} 0 ${large} 0 ${p2x} ${p2y}" class="${cls}"/>`;
+}
+function ray(cx,cy,len,angleDeg){
+  const rad=angleDeg*Math.PI/180;
+  return [cx+len*Math.cos(rad), cy-len*Math.sin(rad)];
+}
+
+/* ---- shape diagrams ---- */
+function diaTriHeight(base,h){
+  const inner = PG("20,150 220,150 120,25") +
+    L(120,150,120,25,'accent') + rightAngleMark(120,150,9,0) +
+    TX(120,168,base+' سم') + TX(150,90,h+' سم');
+  return svgWrap(inner);
+}
+function diaRightTri(a,b){
+  const inner = PG("30,150 30,30 210,150") + rightAngleMark(30,150,10,0) +
+    TX(12,95,a+' سم') + TX(120,168,b+' سم');
+  return svgWrap(inner);
+}
+function diaEquilateral(side){
+  const inner = PG("120,25 20,150 220,150") +
+    TX(60,90,'‏٫') + TX(120,168,side+' سم') +
+    L(65,113,72,120,'thin') + L(155,113,148,120,'thin') + L(112,145,128,145,'thin');
+  return svgWrap(inner);
+}
+function diaParallelogram(base,h){
+  const inner = PG("50,150 220,150 190,30 20,30") +
+    L(50,150,50,30,'accent') + rightAngleMark(50,145,8,90) +
+    TX(135,168,base+' سم') + TX(30,95,h+' سم');
+  return svgWrap(inner);
+}
+function diaSquare(side){
+  const inner = PG("40,30 200,30 200,150 40,150") + TX(120,168,side+' سم');
+  return svgWrap(inner);
+}
+function diaSquareDiagonal(d){
+  const inner = PG("40,30 200,30 200,150 40,150") + L(40,30,200,150,'accent') + TX(140,80,d+' سم');
+  return svgWrap(inner);
+}
+function diaRectangle(w,h){
+  const inner = PG("30,45 210,45 210,145 30,145") + TX(120,163,w+' سم') + TX(14,98,h+' سم');
+  return svgWrap(inner);
+}
+function diaRhombusH(base,h){
+  const inner = PG("120,20 210,95 120,170 30,95") +
+    L(120,170,120,95,'accent') + rightAngleMark(120,168,8,180) +
+    TX(178,140,base+' سم') + TX(140,135,h+' سم');
+  return svgWrap(inner);
+}
+function diaRhombusD(d1,d2){
+  const inner = PG("120,20 210,95 120,170 30,95") +
+    L(120,20,120,170,'accent') + L(30,95,210,95,'accent') +
+    TX(140,55,d1+' سم') + TX(120,88,d2+' سم');
+  return svgWrap(inner);
+}
+function diaTrapezoid(top,bottom,h){
+  const inner = PG("70,30 170,30 220,150 20,150") +
+    L(70,30,70,150,'accent') + rightAngleMark(70,145,8,90) +
+    TX(120,20,top+' سم') + TX(120,168,bottom+' سم') + TX(50,95,h+' سم');
+  return svgWrap(inner);
+}
+function diaHexagon(side){
+  const pts="90,25 150,25 190,95 150,165 90,165 50,95";
+  return svgWrap(PG(pts) + TX(120,20,side+' سم'));
+}
+function diaCircleR(r){
+  const inner = CI(120,95,60) + L(120,95,180,95,'accent') + TX(150,88,r+' سم');
+  return svgWrap(inner);
+}
+function diaCircleD(d){
+  const inner = CI(120,95,60) + L(60,95,180,95,'accent') + TX(120,85,d+' سم');
+  return svgWrap(inner);
+}
+function diaStairs(w,h){
+  const inner = PL("30,150 30,60 70,60 70,100 130,100 130,150",'') +
+    TX(80,168,w+' سم') + TX(14,105,h+' سم');
+  return svgWrap(inner);
+}
+function diaAngleRight(leg1,leg2,ang,findLabel){
+  const inner = PG("30,150 30,30 210,150") + rightAngleMark(30,150,10,0) +
+    arc(30,150,26,0,ang,'thin') + TX(58,138,ang+'°') +
+    TX(14,95,leg1) + TX(120,168,findLabel);
+  return svgWrap(inner);
+}
+function diaTree(hyp,base){
+  const inner = L(30,150,30,45) + L(30,150,190,150) + L(30,45,190,150,'accent') +
+    rightAngleMark(30,150,9,0) + TX(15,100,'؟') + TX(115,168,base+' م') + TX(120,90,hyp+' م');
+  return svgWrap(inner);
+}
+function diaInscribedTri(r){
+  const inner = CI(120,95,65) + PG("120,32 175,140 65,140") + L(120,95,120,32,'accent') + TX(140,65,r+' سم');
+  return svgWrap(inner);
+}
+function diaInscribedSquare(diag){
+  const inner = CI(120,95,60) + PG("120,35 180,95 120,155 60,95") + L(120,35,120,155,'accent') + TX(140,90,diag+' سم');
+  return svgWrap(inner);
+}
+function diaCircleInSquare(side){
+  const inner = PG("40,25 200,25 200,165 40,165") + CI(120,95,80) + TX(120,15,side+' سم');
+  return svgWrap(inner);
+}
+function diaSquareInCircle(d){
+  const inner = CI(120,95,85) + PG("120,10 205,95 120,180 35,95") + L(120,10,120,180,'accent') + TX(150,45,d+' سم');
+  return svgWrap(inner);
+}
+function diaHexInCircle(r){
+  const inner = CI(120,95,68) + PG("120,27 178,61 178,129 120,163 62,129 62,61") + L(120,95,120,27,'accent') + TX(140,62,r+' سم');
+  return svgWrap(inner);
+}
+function diaTangentPoint(t1,t2){
+  const inner = CI(150,110,45) + TX(50,60,'أ') + L(50,60,150,65,'') + L(50,60,150,155,'') +
+    TX(105,55,t1+' سم') + (t2? TX(100,120,t2+' سم'):'');
+  return svgWrap(inner);
+}
+function diaTangentTriangle(tan,r,findLabel){
+  const inner = CI(160,130,40) + L(160,130,160,90,'accent') + L(160,90,60,50,'') + L(60,50,160,130,'accent') +
+    rightAngleMark(160,90,8,90) + TX(180,110,r+' سم') + TX(95,60,tan+' سم') + TX(95,110,findLabel);
+  return svgWrap(inner);
+}
+function diaLinearPair(given){
+  const inner = L(20,110,220,110) + L(120,110,170,35,'accent') +
+    arc(120,110,40,0,55,'thin') + TX(148,80,'س') + arc(120,110,55,55,180,'thin') + TX(72,90,given+'°');
+  return svgWrap(inner,'0 0 240 150');
+}
+function diaThreeLine(a1,a2){
+  const inner = L(20,110,220,110) + L(80,110,100,35,'accent') + L(160,110,180,35,'accent') +
+    TX(66,80,a1+'°') + TX(190,80,a2+'°') + TX(128,80,'س');
+  return svgWrap(inner,'0 0 240 150');
+}
+function diaComplementary(){
+  const inner = L(30,150,30,30) + L(30,150,190,150) + L(30,150,140,60,'accent') +
+    rightAngleMark(30,150,10,0) + TX(55,105,'س') + TX(105,130,'٢س');
+  return svgWrap(inner);
+}
+function diaExterior(a1,a2){
+  const inner = PG("40,150 130,40 220,150") + L(40,150,260,150) +
+    TX(110,55,a1+'°') + TX(200,60,a2+'°') + TX(240,168,'س');
+  return svgWrap(inner,'0 0 270 190');
+}
+function diaCentralInscribed(mode,given){
+  const inner = CI(120,100,68) +
+    (mode==='central'? (PG("120,100 178,60 178,140",'fillmark')+TX(140,100,given+'°')+PL("178,60 62,140 178,140",''))
+      : (PL("178,60 62,140 178,140",'')+arc(178,100,20,140,220,'thin')+TX(160,100,given+'°')) ) +
+    TX(120,180,'أوجد قيمة الزاوية المطلوبة');
+  return svgWrap(inner,'0 0 240 200');
+}
+function diaSameArc(given){
+  const inner = CI(120,100,68) + PL("60,70 180,70 120,150 60,70",'') + PL("60,70 120,150",'accent') +
+    TX(70,60,given+'°') + TX(170,60,'س');
+  return svgWrap(inner);
+}
+function diaCyclic(given){
+  const inner = CI(120,100,68) + PG("70,50 175,80 165,150 60,130") +
+    TX(90,65,given+'°') + TX(140,135,'س');
+  return svgWrap(inner);
+}
+function diaXcross(given){
+  const inner = L(30,30,210,170) + L(30,170,210,30) + arc(120,100,30,20,70,'thin') +
+    TX(150,75,given+'°') + TX(160,120,'س') + TX(85,120,'ص');
+  return svgWrap(inner);
+}
+function diaGrid(cols,rows){
+  let inner='';
+  const w=180,h=120,x0=30,y0=40,cw=w/cols,ch=h/rows;
+  for(let i=0;i<=cols;i++) inner+=L(x0+i*cw,y0,x0+i*cw,y0+h);
+  for(let j=0;j<=rows;j++) inner+=L(x0,y0+j*ch,x0+w,y0+j*ch);
+  return svgWrap(inner);
+}
+function diaTriGrid(n){
+  let inner='';
+  const top=[120,20], bl=[30,160], br=[210,160];
+  inner+=PG("120,20 30,160 210,160");
+  for(let i=1;i<n;i++){
+    const lx = top[0]+(bl[0]-top[0])*i/n, ly = top[1]+(bl[1]-top[1])*i/n;
+    const rx = top[0]+(br[0]-top[0])*i/n, ry = top[1]+(br[1]-top[1])*i/n;
+    inner+=L(lx,ly,rx,ry);
+  }
+  for(let i=1;i<n;i++){
+    const bx = bl[0]+(br[0]-bl[0])*i/n, by=160;
+    const tx1 = top[0]+(bl[0]-top[0])*(0)/n;
+    inner+=L(bx,by, top[0]+(bx-bl[0])*0,20); // simplified vertical-ish guide (visual only)
+  }
+  return svgWrap(inner);
+}
+
+/* ============================= QUESTIONS ============================= */
+const Q = [];
+function add(cat,text,diagram,options,correct,explain){
+  Q.push({id:Q.length+1,cat,text,diagram,options,correct,explain,flag:false,answer:null});
+}
+
+/* --- مساحات (12) --- */
+add('مساحات المثلثات','في الشكل المجاور، أوجد مساحة المثلث', diaTriHeight(8,6),
+  ['<bdi>20 سم²</bdi>','<bdi>22 سم²</bdi>','<bdi>24 سم²</bdi>','<bdi>26 سم²</bdi>'],2,
+  'مساحة المثلث = ½ × القاعدة × الارتفاع = ½ × 8 × 6 = 24 سم²');
+add('مساحات المثلثات','في الشكل المجاور، أوجد مساحة المثلث', diaRightTri(9,4),
+  ['<bdi>16 سم²</bdi>','<bdi>18 سم²</bdi>','<bdi>20 سم²</bdi>','<bdi>22 سم²</bdi>'],1,
+  'في المثلث القائم الزاوية: المساحة = ½ × الضلعين القائمين = ½ × 9 × 4 = 18 سم²');
+add('مساحات المثلثات','في الشكل المجاور، مثلث متطابق الأضلاع طول ضلعه 6سم، أوجد مساحته', diaEquilateral(6),
+  ['<bdi>6√3 سم²</bdi>','<bdi>9√3 سم²</bdi>','<bdi>12√3 سم²</bdi>','<bdi>18√3 سم²</bdi>'],1,
+  'مساحة المثلث متطابق الأضلاع = (√3/4) × ض² = (√3/4) × 36 = 9√3 سم²');
+add('مساحات الأشكال','في الشكل المجاور، أوجد مساحة متوازي الأضلاع', diaParallelogram(9,5),
+  ['<bdi>40 سم²</bdi>','<bdi>42 سم²</bdi>','<bdi>45 سم²</bdi>','<bdi>48 سم²</bdi>'],2,
+  'مساحة متوازي الأضلاع = القاعدة × الارتفاع = 9 × 5 = 45 سم²');
+add('مساحات الأشكال','في الشكل المجاور، أوجد مساحة المربع', diaSquare(7),
+  ['<bdi>42 سم²</bdi>','<bdi>45 سم²</bdi>','<bdi>49 سم²</bdi>','<bdi>56 سم²</bdi>'],2,
+  'مساحة المربع = الضلع² = 7² = 49 سم²');
+add('مساحات الأشكال','مربع طول قطره 8سم، أوجد مساحته', diaSquareDiagonal(8),
+  ['<bdi>28 سم²</bdi>','<bdi>30 سم²</bdi>','<bdi>32 سم²</bdi>','<bdi>34 سم²</bdi>'],2,
+  'مساحة المربع بدلالة القطر = (القطر²) ÷ 2 = 64 ÷ 2 = 32 سم²');
+add('مساحات الأشكال','في الشكل المجاور، أوجد مساحة المستطيل', diaRectangle(9,5),
+  ['<bdi>40 سم²</bdi>','<bdi>42 سم²</bdi>','<bdi>45 سم²</bdi>','<bdi>50 سم²</bdi>'],2,
+  'مساحة المستطيل = الطول × العرض = 9 × 5 = 45 سم²');
+add('مساحات الأشكال','في الشكل المجاور، أوجد مساحة المعين', diaRhombusH(7,4),
+  ['<bdi>24 سم²</bdi>','<bdi>26 سم²</bdi>','<bdi>28 سم²</bdi>','<bdi>30 سم²</bdi>'],2,
+  'مساحة المعين = القاعدة × الارتفاع = 7 × 4 = 28 سم²');
+add('مساحات الأشكال','معين طولا قطريه 8سم، 10سم، أوجد مساحته', diaRhombusD(8,10),
+  ['<bdi>36 سم²</bdi>','<bdi>40 سم²</bdi>','<bdi>44 سم²</bdi>','<bdi>48 سم²</bdi>'],1,
+  'مساحة المعين = ½ × ناتج ضرب القطرين = ½ × 8 × 10 = 40 سم²');
+add('مساحات الأشكال','في الشكل المجاور، أوجد مساحة شبه المنحرف', diaTrapezoid(5,9,6),
+  ['<bdi>36 سم²</bdi>','<bdi>40 سم²</bdi>','<bdi>42 سم²</bdi>','<bdi>45 سم²</bdi>'],2,
+  'مساحة شبه المنحرف = ½ × (مجموع القاعدتين) × الارتفاع = ½ × (5+9) × 6 = 42 سم²');
+add('مساحات الأشكال','في الشكل المجاور سداسي منتظم طول ضلعه 4سم، أوجد مساحته', diaHexagon(4),
+  ['<bdi>16√3 سم²</bdi>','<bdi>20√3 سم²</bdi>','<bdi>24√3 سم²</bdi>','<bdi>28√3 سم²</bdi>'],2,
+  'مساحة السداسي المنتظم = (3√3/2) × ض² = (3√3/2) × 16 = 24√3 سم²');
+add('مساحة الدائرة','في الشكل المجاور، أوجد مساحة الدائرة', diaCircleR(9),
+  ['<bdi>72π سم²</bdi>','<bdi>81π سم²</bdi>','<bdi>90π سم²</bdi>','<bdi>99π سم²</bdi>'],1,
+  'مساحة الدائرة = π × نق² = π × 9² = 81π سم²');
+
+/* --- محيطات (6) --- */
+add('المحيطات','في الشكل المجاور، أوجد محيط المستطيل', diaRectangle(10,7),
+  ['<bdi>30 سم</bdi>','<bdi>32 سم</bdi>','<bdi>34 سم</bdi>','<bdi>36 سم</bdi>'],2,
+  'محيط المستطيل = 2 × (الطول + العرض) = 2 × (10+7) = 34 سم');
+add('المحيطات','في الشكل المجاور، أوجد محيط المربع', diaSquare(11),
+  ['<bdi>40 سم</bdi>','<bdi>42 سم</bdi>','<bdi>44 سم</bdi>','<bdi>48 سم</bdi>'],2,
+  'محيط المربع = 4 × الضلع = 4 × 11 = 44 سم');
+add('المحيطات','في الشكل المجاور، أوجد محيط المعين', diaRhombusH(11,6),
+  ['<bdi>40 سم</bdi>','<bdi>42 سم</bdi>','<bdi>44 سم</bdi>','<bdi>48 سم</bdi>'],2,
+  'محيط المعين = 4 × الضلع = 4 × 11 = 44 سم (جميع أضلاع المعين متساوية)');
+add('المحيطات','في الشكل المجاور، أوجد محيط الشكل (شبه منحرف قاعدتاه 6سم، 9سم وضلعاه المائلان متساويان طول كل منهما 5سم)', null,
+  ['<bdi>22 سم</bdi>','<bdi>24 سم</bdi>','<bdi>25 سم</bdi>','<bdi>28 سم</bdi>'],2,
+  'المحيط = مجموع الأضلاع الأربعة = 6 + 9 + 5 + 5 = 25 سم');
+add('المحيطات','في الشكل المجاور (شكل متدرج على هيئة سلم)، أوجد محيط الشكل', diaStairs(7,5),
+  ['<bdi>20 سم</bdi>','<bdi>22 سم</bdi>','<bdi>24 سم</bdi>','<bdi>26 سم</bdi>'],2,
+  'محيط الشكل المتدرج (السلّم) يساوي محيط المستطيل المحيط به = 2×(7+5) = 24 سم');
+add('المحيطات','في الشكل المجاور (شكل متدرج على هيئة سلم)، أوجد محيط الشكل', diaStairs(8,6),
+  ['<bdi>24 سم</bdi>','<bdi>26 سم</bdi>','<bdi>28 سم</bdi>','<bdi>30 سم</bdi>'],2,
+  'محيط الشكل المتدرج يساوي محيط المستطيل المحيط به = 2×(8+6) = 28 سم');
+
+/* --- علاقات الدائرة (5) --- */
+add('الدائرة','دائرة مساحتها 49π سم²، فإن نصف قطرها = ......... سم', null,
+  ['<bdi>5</bdi>','<bdi>6</bdi>','<bdi>7</bdi>','<bdi>8</bdi>'],2,
+  'من قانون المساحة: π×نق²=49π ⟵ نق²=49 ⟵ نق=7 سم');
+add('الدائرة','دائرة محيطها 20π سم، فإن نصف قطرها = ......... سم', null,
+  ['<bdi>8</bdi>','<bdi>10</bdi>','<bdi>12</bdi>','<bdi>14</bdi>'],1,
+  'من قانون المحيط: 2πنق=20π ⟵ نق=10 سم');
+add('الدائرة','دائرة مركزها م رسم على قطرها (60سم) دائرة صغيرة قطرها 6سم، أوجد نسبة محيط الدائرة الصغيرة إلى محيط الدائرة الكبيرة', null,
+  ['<bdi>1/10</bdi>','<bdi>1/60</bdi>','<bdi>1/30</bdi>','<bdi>1/6</bdi>'],0,
+  'نسبة المحيطين = نسبة القطرين (أو نصفي القطرين) = 6/60 = 1/10');
+add('الدائرة','نصف قطر الدائرة الكبيرة 50سم، وُضع على قطرها 5 دوائر صغيرة متساوية، فما نسبة مساحة الدائرة الصغرى إلى مساحة الدائرة الكبرى؟', null,
+  ['<bdi>1/5</bdi>','<bdi>1/10</bdi>','<bdi>1/20</bdi>','<bdi>1/25</bdi>'],3,
+  'قطر الدائرة الكبيرة = 100سم، فقطر كل دائرة صغيرة = 100÷5 = 20سم أي نق=10. نسبة المساحتين = (10/50)² = 1/25');
+add('الدائرة','مربع مساحته 64 سم²، رُسمت دائرة داخله بحيث يكون قطرها مساوياً لضلع المربع، أوجد مساحة الدائرة', diaCircleInSquare(8),
+  ['<bdi>12π سم²</bdi>','<bdi>14π سم²</bdi>','<bdi>16π سم²</bdi>','<bdi>18π سم²</bdi>'],2,
+  'ضلع المربع = 8سم فقطر الدائرة = 8سم ونصف قطرها = 4، مساحتها = π×4²=16π سم²');
+
+/* --- طول الضلع الناقص / فيثاغورس (7) --- */
+add('طول الضلع الناقص','في الشكل المجاور مثلث قائم الزاوية طولا ضلعيه القائمين 6سم، 8سم، أوجد طول الوتر', diaRightTri(6,8),
+  ['<bdi>9 سم</bdi>','<bdi>10 سم</bdi>','<bdi>11 سم</bdi>','<bdi>12 سم</bdi>'],1,
+  'بنظرية فيثاغورس: الوتر² = 6²+8² = 36+64 = 100 ⟵ الوتر = 10 سم');
+add('طول الضلع الناقص','مثلث قائم الزاوية طول وتره 13سم وأحد ضلعيه القائمين 5سم، أوجد طول الضلع الآخر', null,
+  ['<bdi>10 سم</bdi>','<bdi>11 سم</bdi>','<bdi>12 سم</bdi>','<bdi>13 سم</bdi>'],2,
+  'بنظرية فيثاغورس: الضلع² = 13²-5² = 169-25 = 144 ⟵ الضلع = 12 سم');
+add('طول الضلع الناقص','سلّم طوله 15م مستند على حائط، وتبعد قاعدته عن الحائط مسافة 9م، أوجد ارتفاع نقطة استناد السلّم على الحائط', diaTree(15,9),
+  ['<bdi>10 م</bdi>','<bdi>11 م</bdi>','<bdi>12 م</bdi>','<bdi>13 م</bdi>'],2,
+  'بنظرية فيثاغورس: الارتفاع² = 15²-9² = 225-81 = 144 ⟵ الارتفاع = 12 م');
+add('طول الضلع الناقص','شجرة يصنع خيط ربطها بالأرض زاوية 45° وتبعد قاعدة الخيط عن الشجرة 8م، أوجد ارتفاع الشجرة', diaAngleRight('؟','8م',45,'؟'),
+  ['<bdi>6 م</bdi>','<bdi>7 م</bdi>','<bdi>8 م</bdi>','<bdi>9 م</bdi>'],2,
+  'في مثلث 45°-45°-90° يتساوى الضلعان القائمان، فارتفاع الشجرة = 8م');
+add('طول الضلع الناقص','في مثلث قائم الزاوية طول الوتر 12سم وإحدى زواياه 30°، أوجد طول الضلع المقابل لزاوية 30°', diaAngleRight('12سم','؟',30,'؟'),
+  ['<bdi>4 سم</bdi>','<bdi>5 سم</bdi>','<bdi>6 سم</bdi>','<bdi>7 سم</bdi>'],2,
+  'الضلع المقابل لزاوية 30° يساوي نصف الوتر = 12÷2 = 6 سم');
+add('طول الضلع الناقص','في مثلث قائم الزاوية الضلع المقابل لزاوية 30° طوله 6سم، أوجد طول الوتر', null,
+  ['<bdi>8 سم</bdi>','<bdi>10 سم</bdi>','<bdi>12 سم</bdi>','<bdi>14 سم</bdi>'],2,
+  'الوتر = 2 × الضلع المقابل لزاوية 30° = 2 × 6 = 12 سم');
+add('طول الضلع الناقص','في مثلث قائم الزاوية ومتساوي الساقين طول وتره 8√2 سم، أوجد طول أحد الضلعين القائمين', null,
+  ['<bdi>6 سم</bdi>','<bdi>7 سم</bdi>','<bdi>8 سم</bdi>','<bdi>9 سم</bdi>'],2,
+  'في مثلث 45°-45°-90°: الوتر = الضلع×√2 ⟵ الضلع = (8√2)÷√2 = 8 سم');
+
+/* --- أشكال منقوشة داخل/حول دائرة، مماسات (9) --- */
+add('الدائرة والأشكال المنقوشة','مثلث متطابق الأضلاع مرسوم داخل دائرة نصف قطرها 6سم، فإن محيط المثلث = ......... سم', diaInscribedTri(6),
+  ['<bdi>12√3</bdi>','<bdi>15√3</bdi>','<bdi>18√3</bdi>','<bdi>21√3</bdi>'],2,
+  'طول ضلع المثلث المتطابق المرسوم داخل دائرة = نق×√3 = 6√3، فالمحيط = 3×6√3 = 18√3 سم');
+add('الدائرة والأشكال المنقوشة','مربع مرسوم داخل دائرة قطرها 8سم (رؤوسه على الدائرة)، فإن مساحة المربع = ......... سم²', diaInscribedSquare(8),
+  ['<bdi>28</bdi>','<bdi>30</bdi>','<bdi>32</bdi>','<bdi>34</bdi>'],2,
+  'قطر الدائرة = قطر المربع، ومساحة المربع = القطر²÷2 = 64÷2 = 32 سم²');
+add('الدائرة والأشكال المنقوشة','مربع مساحته 100 سم²، رُسمت دائرة داخله مماسة لأضلاعه (قطرها = ضلع المربع)، أوجد مساحة الدائرة', diaCircleInSquare(10),
+  ['<bdi>20π</bdi>','<bdi>22π</bdi>','<bdi>25π</bdi>','<bdi>28π</bdi>'],2,
+  'ضلع المربع = 10سم فنصف قطر الدائرة = 5سم، مساحتها = π×5² = 25π سم²');
+add('الدائرة والأشكال المنقوشة','طول ضلع المربع 12سم، ورُسمت داخله دائرة مماسة لأضلاعه. احسب مساحة الجزء المظلل (بين المربع والدائرة)', diaCircleInSquare(12),
+  ['<bdi>144-36π</bdi>','<bdi>144-72π</bdi>','<bdi>100-36π</bdi>','<bdi>144-16π</bdi>'],0,
+  'مساحة المربع = 144، نصف قطر الدائرة = 6 ومساحتها = 36π، فالمساحة المظللة = 144-36π سم²');
+add('الدائرة والأشكال المنقوشة','قطر الدائرة 12سم، ورُسم داخلها مربع رؤوسه على الدائرة. احسب مساحة الجزء المظلل (بين الدائرة والمربع)', diaSquareInCircle(12),
+  ['<bdi>36π-72</bdi>','<bdi>36π-36</bdi>','<bdi>72π-72</bdi>','<bdi>18π-36</bdi>'],0,
+  'مساحة الدائرة = π×6²=36π، ومساحة المربع = 12²÷2=72، فالمظللة = 36π-72 سم²');
+add('الدائرة والأشكال المنقوشة','سداسي منتظم مرسوم داخل دائرة نصف قطرها 8سم، فإن محيطه = ......... سم', diaHexInCircle(8),
+  ['<bdi>42</bdi>','<bdi>45</bdi>','<bdi>48</bdi>','<bdi>51</bdi>'],2,
+  'طول ضلع السداسي المنتظم المرسوم داخل دائرة = نصف قطرها = 8سم، فالمحيط = 6×8 = 48 سم');
+add('المماسات','من نقطة أ خارج الدائرة رُسم مماسان أب، أج، فإذا كان طول أب = 7سم، أوجد طول أج', diaTangentPoint(7),
+  ['<bdi>5 سم</bdi>','<bdi>6 سم</bdi>','<bdi>7 سم</bdi>','<bdi>8 سم</bdi>'],2,
+  'المماسان المرسومان من نقطة واحدة خارج الدائرة متساويان في الطول، فإن أج = أب = 7 سم');
+add('المماسات','أب مماس لدائرة عند النقطة ب طوله 12سم، ونصف قطر الدائرة 5سم، أوجد المسافة من النقطة أ إلى مركز الدائرة (أم)', diaTangentTriangle(12,5,'؟'),
+  ['<bdi>11 سم</bdi>','<bdi>12 سم</bdi>','<bdi>13 سم</bdi>','<bdi>14 سم</bdi>'],2,
+  'المماس عمودي على نصف القطر عند نقطة التماس، فبنظرية فيثاغورس: أم² = 12²+5² = 169 ⟵ أم = 13 سم');
+add('المماسات','أب مماس لدائرة عند النقطة ب، المسافة من النقطة أ إلى مركز الدائرة أم = 10سم، ونصف قطر الدائرة 6سم، أوجد طول أب', diaTangentTriangle('؟',6,'أم=10سم'),
+  ['<bdi>6 سم</bdi>','<bdi>7 سم</bdi>','<bdi>8 سم</bdi>','<bdi>9 سم</bdi>'],2,
+  'بنظرية فيثاغورس: أب² = 10²-6² = 64 ⟵ أب = 8 سم');
+
+/* --- الزوايا (10) --- */
+add('الزوايا','زاويتان متكاملتان (متتامتان على استقامة واحدة)، إذا كانت إحداهما 110°، أوجد قياس الزاوية الأخرى', diaLinearPair(110),
+  ['<bdi>60°</bdi>','<bdi>65°</bdi>','<bdi>70°</bdi>','<bdi>75°</bdi>'],2,
+  'مجموع الزاويتين على استقامة واحدة = 180°، فالزاوية الأخرى = 180-110 = 70°');
+add('الزوايا','ثلاث زوايا متتالية تقع على استقامة واحدة، وقياس كل منها يساوي س، أوجد قيمة س', diaThreeLine('س','س'),
+  ['<bdi>45°</bdi>','<bdi>50°</bdi>','<bdi>60°</bdi>','<bdi>70°</bdi>'],2,
+  'مجموع الزوايا على استقامة واحدة = 180°، فـ3س=180 ⟵ س=60°');
+add('الزوايا','زاويتان متتامتان، إحداهما ضعف الأخرى، أوجد قياس الزاوية الأصغر', diaComplementary(),
+  ['<bdi>20°</bdi>','<bdi>25°</bdi>','<bdi>30°</bdi>','<bdi>35°</bdi>'],2,
+  'الزاويتان المتتامتان مجموعهما 90°، فإذا كانت الأصغر=س والأخرى=2س: 3س=90 ⟵ س=30°');
+add('الزوايا','الزاوية الخارجية لمثلث تساوي مجموع الزاويتين الداخليتين غير المجاورتين لها؛ إذا كانتا 50°، 65°، أوجد قياس الزاوية الخارجية', diaExterior(50,65),
+  ['<bdi>105°</bdi>','<bdi>110°</bdi>','<bdi>115°</bdi>','<bdi>120°</bdi>'],2,
+  'قياس الزاوية الخارجية = 50+65 = 115°');
+add('زوايا الدائرة','زاوية مركزية في دائرة قياسها 80°، أوجد قياس الزاوية المحيطية المرسومة على نفس القوس', diaCentralInscribed('central',80),
+  ['<bdi>30°</bdi>','<bdi>35°</bdi>','<bdi>40°</bdi>','<bdi>45°</bdi>'],2,
+  'الزاوية المحيطية تساوي نصف الزاوية المركزية المقابلة لنفس القوس = 80÷2 = 40°');
+add('زوايا الدائرة','زاوية محيطية في دائرة قياسها 35°، أوجد قياس الزاوية المركزية المقابلة لنفس القوس', diaCentralInscribed('inscribed',35),
+  ['<bdi>60°</bdi>','<bdi>65°</bdi>','<bdi>70°</bdi>','<bdi>75°</bdi>'],2,
+  'الزاوية المركزية تساوي ضعف الزاوية المحيطية المقابلة لنفس القوس = 2×35 = 70°');
+add('زوايا الدائرة','زاويتان محيطيتان في دائرة تقابلان نفس القوس، إذا كانت إحداهما 42°، أوجد قياس الأخرى', diaSameArc(42),
+  ['<bdi>38°</bdi>','<bdi>40°</bdi>','<bdi>42°</bdi>','<bdi>44°</bdi>'],2,
+  'الزوايا المحيطية المقابلة لنفس القوس متساوية في القياس، فالزاوية الأخرى = 42°');
+add('زوايا الدائرة','في رباعي دائري (مرسوم داخل دائرة)، إذا كانت إحدى زواياه 100°، أوجد قياس الزاوية المقابلة لها', diaCyclic(100),
+  ['<bdi>70°</bdi>','<bdi>75°</bdi>','<bdi>80°</bdi>','<bdi>85°</bdi>'],2,
+  'في الرباعي الدائري تكون كل زاويتين متقابلتين متتامتين (مجموعهما 180°)، فالزاوية المقابلة = 180-100 = 80°');
+add('الزوايا','خطان مستقيمان متقاطعان تكوّن عندهما زاوية قياسها 70°. إذا كانت س الزاوية المقابلة لها بالرأس، وص إحدى الزاويتين المجاورتين لها، أوجد قيمة س + ص', diaXcross(70),
+  ['<bdi>110°</bdi>','<bdi>140°</bdi>','<bdi>180°</bdi>','<bdi>220°</bdi>'],2,
+  'الزاوية المقابلة بالرأس تساوي الزاوية المعطاة: س=70°. والزاوية المجاورة تتمم 180°: ص=110°. إذن س+ص=180°');
+add('الزوايا','خط مستقيم قُسم إلى ثلاث زوايا متتالية قياساتها 50°، س، 45° وتقع على استقامة واحدة، أوجد قيمة س', diaThreeLine(50,45),
+  ['<bdi>75°</bdi>','<bdi>80°</bdi>','<bdi>85°</bdi>','<bdi>90°</bdi>'],2,
+  'مجموع الزوايا على استقامة واحدة = 180°، فـس = 180-50-45 = 85°');
+
+/* --- زوايا المضلعات المنتظمة (3) --- */
+add('زوايا المضلعات','الشكل المجاور خماسي منتظم، أوجد قياس إحدى زواياه الداخلية', null,
+  ['<bdi>100°</bdi>','<bdi>104°</bdi>','<bdi>108°</bdi>','<bdi>112°</bdi>'],2,
+  'قياس الزاوية الداخلية للمضلع المنتظم = (ن-2)×180°÷ن = (5-2)×180÷5 = 108°');
+add('زوايا المضلعات','الشكل المجاور سداسي منتظم، أوجد قياس إحدى زواياه الداخلية', null,
+  ['<bdi>110°</bdi>','<bdi>115°</bdi>','<bdi>120°</bdi>','<bdi>125°</bdi>'],2,
+  'قياس الزاوية الداخلية للسداسي المنتظم = (6-2)×180÷6 = 120°');
+add('زوايا المضلعات','في سداسي منتظم، أوجد قيمة س+ص حيث س، ص زاويتان خارجيتان متتاليتان له', null,
+  ['<bdi>100°</bdi>','<bdi>110°</bdi>','<bdi>120°</bdi>','<bdi>130°</bdi>'],2,
+  'كل زاوية خارجية للسداسي المنتظم = 360÷6 = 60°، فمجموع زاويتين خارجيتين = 60+60 = 120°');
+
+/* --- المجسمات (5) --- */
+add('المجسمات','متوازي مستطيلات أبعاده 8سم، 12سم، 6سم، أوجد حجمه', null,
+  ['<bdi>480 سم³</bdi>','<bdi>528 سم³</bdi>','<bdi>576 سم³</bdi>','<bdi>624 سم³</bdi>'],2,
+  'حجم متوازي المستطيلات = الطول × العرض × الارتفاع = 8×12×6 = 576 سم³');
+add('المجسمات','متوازي مستطيلات أبعاده 8سم، 12سم، 6سم، أوجد مساحته الكلية', null,
+  ['<bdi>392 سم²</bdi>','<bdi>412 سم²</bdi>','<bdi>432 سم²</bdi>','<bdi>452 سم²</bdi>'],2,
+  'المساحة الكلية = 2×(ل×ع + ع×ر + ل×ر) = 2×(96+72+48) = 432 سم²');
+add('المجسمات','مكعب طول قطر أحد أوجهه 6√2 سم، أوجد حجمه', null,
+  ['<bdi>180 سم³</bdi>','<bdi>196 سم³</bdi>','<bdi>216 سم³</bdi>','<bdi>225 سم³</bdi>'],2,
+  'قطر الوجه = الضلع×√2، فالضلع = (6√2)÷√2 = 6سم، والحجم = 6³ = 216 سم³');
+add('المجسمات','مكعب حجمه 125 سم³، أوجد طول قطر أحد أوجهه', null,
+  ['<bdi>4√2 سم</bdi>','<bdi>5√2 سم</bdi>','<bdi>6√2 سم</bdi>','<bdi>7√2 سم</bdi>'],1,
+  'طول ضلع المكعب = ∛125 = 5سم، وقطر الوجه = الضلع×√2 = 5√2 سم');
+add('المجسمات','صاروخ مكوّن من أسطوانة مساحة قاعدتها 6π م² وارتفاعها 2م، وعليها مخروط ارتفاعه 1م، فما حجم الصاروخ (بدلالة π)؟', null,
+  ['<bdi>12π م³</bdi>','<bdi>13π م³</bdi>','<bdi>14π م³</bdi>','<bdi>15π م³</bdi>'],2,
+  'حجم الأسطوانة = 6π×2 = 12π، وحجم المخروط = ⅓×6π×1 = 2π، فحجم الصاروخ = 12π+2π = 14π م³');
+
+/* --- عد الأشكال (3) --- */
+add('عدّ الأشكال','في الشكل المجاور (شبكة 3×3)، كم عدد المربعات الموجودة في الشكل؟', diaGrid(3,3),
+  ['<bdi>9</bdi>','<bdi>10</bdi>','<bdi>12</bdi>','<bdi>14</bdi>'],3,
+  'المربعات 1×1 = 9، والمربعات 2×2 = 4، والمربع 3×3 = 1، فالمجموع = 9+4+1 = 14 مربعاً');
+add('عدّ الأشكال','في الشكل المجاور (شبكة من 3 أعمدة و2 صفوف)، كم عدد جميع المستطيلات الموجودة في الشكل؟', diaGrid(3,2),
+  ['<bdi>15</bdi>','<bdi>16</bdi>','<bdi>18</bdi>','<bdi>20</bdi>'],2,
+  'عدد المستطيلات = عدد طرق اختيار خطين رأسيين × عدد طرق اختيار خطين أفقيين = C(4,2)×C(3,2) = 6×3 = 18 مستطيلاً');
+add('عدّ الأشكال','مثلث كبير مقسّم بخطوط متوازية لأضلاعه إلى 9 مثلثات صغيرة متطابقة، كم عدد جميع المثلثات (الصغيرة والمكوّنة) في الشكل؟', diaTriGrid(3),
+  ['<bdi>9</bdi>','<bdi>10</bdi>','<bdi>12</bdi>','<bdi>13</bdi>'],3,
+  'بعدّ جميع المثلثات المتكوّنة (الصغيرة والمركّبة من عدة صغار) في مثلث مقسّم لثلاث طبقات، يكون المجموع = 13 مثلثاً');
+
+/* --- تقاطع مستقيمات مع الدائرة (3) --- */
+add('الدائرة والمستقيمات','إذا مرّت 5 مستقيمات جميعها من مركز دائرة، فكم عدد الأجزاء الناتجة داخل الدائرة؟', null,
+  ['<bdi>8</bdi>','<bdi>9</bdi>','<bdi>10</bdi>','<bdi>12</bdi>'],2,
+  'كل مستقيم يمر بالمركز يقسم الدائرة إلى قطرين، فعدد الأجزاء = 2×عدد المستقيمات = 2×5 = 10 أجزاء');
+add('الدائرة والمستقيمات','إذا قطعت 5 أوتار محيط دائرة بحيث لا يتقاطع أي منها داخلها، فكم عدد الأجزاء الناتجة؟', null,
+  ['<bdi>5</bdi>','<bdi>6</bdi>','<bdi>7</bdi>','<bdi>8</bdi>'],1,
+  'كل وتر إضافي (لا يتقاطع مع غيره) يضيف جزءاً واحداً، فعدد الأجزاء = عدد الأوتار + 1 = 5+1 = 6 أجزاء');
+add('الدائرة والمستقيمات','إذا تقاطعت 5 أوتار داخل دائرة بحيث كل زوج منها يتقاطع في نقطة مختلفة، فكم عدد الأجزاء الناتجة داخل الدائرة؟', null,
+  ['<bdi>14</bdi>','<bdi>15</bdi>','<bdi>16</bdi>','<bdi>18</bdi>'],2,
+  'عدد الأجزاء = 1 + عدد الأوتار + عدد نقاط التقاطع = 1+5+C(5,2) = 1+5+10 = 16 جزءاً');
+
+/* --- متباينة المثلث (1) --- */
+add('المثلثات','مثلث طولا ضلعين فيه 8سم لكل منهما، والزاوية المحصورة بينهما 60°، أوجد طول الضلع الثالث', null,
+  ['<bdi>6 سم</bdi>','<bdi>7 سم</bdi>','<bdi>8 سم</bdi>','<bdi>9 سم</bdi>'],2,
+  'بقانون جيب التمام: ض²=8²+8²-2×8×8×جتا60°=64+64-64=64 ⟵ الضلع الثالث = 8 سم (المثلث متطابق الأضلاع)');
+
+/* --- الهندسة التحليلية (3) --- */
+add('الهندسة التحليلية','إذا كان أ(2, 3)، ب(5, 7)، أوجد طول القطعة المستقيمة أب', null,
+  ['<bdi>4</bdi>','<bdi>5</bdi>','<bdi>6</bdi>','<bdi>7</bdi>'],1,
+  '|أب| = √[(5-2)²+(7-3)²] = √(9+16) = √25 = 5');
+add('الهندسة التحليلية','إذا كان أ(2, 3)، ب(5, 7)، أوجد إحداثيات منتصف أب', null,
+  ['<bdi>(3.5, 5)</bdi>','<bdi>(3, 5)</bdi>','<bdi>(4, 5)</bdi>','<bdi>(3.5, 4)</bdi>'],0,
+  'منتصف أب = ((2+5)/2, (3+7)/2) = (3.5, 5)');
+add('الهندسة التحليلية','إذا كان أ(2, 3)، ب(5, 7)، أوجد ميل المستقيم أب', null,
+  ['<bdi>3/4</bdi>','<bdi>4/3</bdi>','<bdi>-4/3</bdi>','<bdi>7/5</bdi>'],1,
+  'الميل = (ص₂-ص₁)/(س₂-س₁) = (7-3)/(5-2) = 4/3');
+
+/* ============================= APP STATE ============================= */
+const TOTAL_TIME = 70*60; // 70 minutes
+let state = {
+  screen:'landing', // landing | exam | results
+  idx:0,
+  timeLeft: TOTAL_TIME,
+  timerHandle:null,
+  navOpen:false,
+  reviewMode:false
+};
+
+function fmtTime(s){
+  const m = Math.floor(s/60), sec = s%60;
+  return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
+
+function startExam(){
+  state.screen='exam'; state.idx=0; state.timeLeft=TOTAL_TIME;
+  Q.forEach(q=>{q.answer=null; q.flag=false;});
+  clearInterval(state.timerHandle);
+  state.timerHandle=setInterval(()=>{
+    state.timeLeft--;
+    if(state.timeLeft<=0){ state.timeLeft=0; clearInterval(state.timerHandle); submitExam(); }
+    renderTimerOnly();
+  },1000);
+  render();
+}
+
+function selectOption(qIndex, optIndex){
+  Q[qIndex].answer = optIndex;
+  render();
+}
+
+function toggleFlag(qIndex){
+  Q[qIndex].flag = !Q[qIndex].flag;
+  render();
+}
+
+function goTo(i){
+  if(i<0||i>=Q.length) return;
+  state.idx=i; state.navOpen=false;
+  render();
+}
+
+function submitExam(){
+  clearInterval(state.timerHandle);
+  state.screen='results'; state.reviewMode=false;
+  render();
+}
+
+function confirmSubmit(){
+  const unanswered = Q.filter(q=>q.answer===null).length;
+  if(unanswered>0){
+    if(!confirm(`لديك ${unanswered} سؤالاً لم تتم الإجابة عنه. هل تريد تسليم الاختبار الآن؟`)) return;
+  }
+  submitExam();
+}
+
+function retakeExam(){ startExam(); }
+
+/* ============================= RENDER ============================= */
+function render(){
+  const app = document.getElementById('app');
+  if(state.screen==='landing') app.innerHTML = renderLanding();
+  else if(state.screen==='exam') app.innerHTML = renderExam();
+  else app.innerHTML = renderResults();
+  window.scrollTo(0,0);
+}
+function renderTimerOnly(){
+  const el = document.getElementById('timerBox');
+  if(!el) return;
+  el.textContent = fmtTime(state.timeLeft);
+  el.parentElement.classList.toggle('low', state.timeLeft<=120);
+}
+
+function brandbarHtml(){
+  return `<div class="brandbar">
+    <div class="brandmark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+    <div class="brandtext">
+      <div class="name">المدربة أم هشام</div>
+      <div class="tag">اختبار القدرات الهندسية</div>
+    </div>
+  </div>`;
+}
+
+function renderLanding(){
+  return `
+  ${brandbarHtml()}
+  <div class="landing-card">
+    <div class="eyebrow">تدريب القدرات — الهندسة</div>
+    <div class="landing-title">اختبار القدرات الهندسية</div>
+    <p class="landing-sub">اختبار إلكتروني تفاعلي يغطي المساحات، المحيطات، الدائرة، الزوايا، المجسمات، عدّ الأشكال، والهندسة التحليلية — بإشراف المدربة أم هشام.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">${Q.length}</div><div class="lbl2">سؤالاً</div></div>
+      <div class="stat"><div class="num">70</div><div class="lbl2">دقيقة</div></div>
+      <div class="stat"><div class="num">اختيار من متعدد</div><div class="lbl2">نوع الأسئلة</div></div>
+    </div>
+    <div class="rules">
+      <div><b>قبل البدء:</b></div>
+      <div>• يمكنك التنقّل بين الأسئلة بحرية والعودة لأي سؤال قبل التسليم.</div>
+      <div>• استخدم أيقونة العلم لوضع علامة على سؤال ترغب بمراجعته لاحقاً.</div>
+      <div>• سيُسلَّم الاختبار تلقائياً عند انتهاء الوقت.</div>
+      <div>• بعد التسليم ستظهر نتيجتك التفصيلية مع مراجعة كامل الحل.</div>
+    </div>
+    <button class="btn btn-primary" onclick="startExam()">ابدأ الاختبار الآن</button>
+  </div>`;
+}
+
+function renderExam(){
+  const q = Q[state.idx];
+  const answered = Q.filter(x=>x.answer!==null).length;
+  const pct = Math.round(((state.idx+1)/Q.length)*100);
+  const optionsHtml = q.options.map((o,i)=>`
+    <div class="opt ${q.answer===i?'selected':''}" onclick="selectOption(${state.idx},${i})">
+      <div class="letter">${['أ','ب','ج','د'][i]}</div>
+      <div class="otext">${o}</div>
+    </div>`).join('');
+
+  const navcells = Q.map((x,i)=>`
+    <div class="navcell ${x.answer!==null?'answered':''} ${i===state.idx?'current':''} ${x.flag?'flagged':''}"
+      onclick="goTo(${i})">${i+1}</div>`).join('');
+
+  return `
+  ${brandbarHtml()}
+  <div class="exambar">
+    <div class="qcount">سؤال ${state.idx+1} <small>/ ${Q.length}</small></div>
+    <div class="timer"><span id="timerBox">${fmtTime(state.timeLeft)}</span></div>
+    <div style="display:flex;gap:8px;">
+      <div class="iconbtn ${q.flag?'flagged':''}" onclick="toggleFlag(${state.idx})" title="وضع علامة">
+        <svg viewBox="0 0 24 24"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg>
+      </div>
+      <div class="iconbtn" onclick="state.navOpen=!state.navOpen; render();" title="خريطة الأسئلة">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div>
+
+  <div class="navgrid ${state.navOpen?'open':''}">
+    <h3>خريطة الأسئلة</h3>
+    <div class="navlegend">
+      <span><span class="legdot" style="background:var(--ok-pale);border:1px solid var(--ok);"></span> تمت الإجابة</span>
+      <span><span class="legdot" style="background:#fff;border:1px solid var(--line);"></span> بدون إجابة</span>
+      <span><span class="legdot" style="background:var(--gold);"></span> معلَّم للمراجعة</span>
+    </div>
+    <div class="navwrap">${navcells}</div>
+  </div>
+
+  <div class="qcard">
+    <div class="qmeta">
+      <span class="qnum-badge">السؤال ${state.idx+1}</span>
+      <span class="qcat">${q.cat}</span>
+    </div>
+    <div class="qtext">${q.text}</div>
+    ${q.diagram? q.diagram : ''}
+    <div class="options">${optionsHtml}</div>
+  </div>
+
+  <div class="navbtns">
+    <button class="btn btn-ghost" onclick="goTo(${state.idx-1})" ${state.idx===0?'disabled style="opacity:.4"':''}>السابق</button>
+    ${state.idx===Q.length-1
+      ? `<button class="btn btn-danger" onclick="confirmSubmit()">تسليم الاختبار</button>`
+      : `<button class="btn btn-primary" onclick="goTo(${state.idx+1})">التالي</button>`}
+  </div>
+  <div style="text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:10px;">تمت الإجابة عن ${answered} من ${Q.length} سؤالاً</div>
+  `;
+}
+
+function renderResults(){
+  let correct=0, wrong=0, unanswered=0;
+  Q.forEach(q=>{
+    if(q.answer===null) unanswered++;
+    else if(q.answer===q.correct) correct++;
+    else wrong++;
+  });
+  const pct = Math.round((correct/Q.length)*100);
+
+  if(!state.reviewMode){
+    return `
+    ${brandbarHtml()}
+    <div class="score-hero">
+      <div class="brand-small">المدربة أم هشام — نتيجة الاختبار</div>
+      <h2>اختبار القدرات الهندسية</h2>
+      <div class="score-circle">
+        <div class="pct">${pct}%</div>
+        <div class="of">${correct} من ${Q.length}</div>
+      </div>
+    </div>
+    <div class="result-grid">
+      <div class="rbox ok"><div class="n">${correct}</div><div class="l">إجابات صحيحة</div></div>
+      <div class="rbox bad"><div class="n">${wrong}</div><div class="l">إجابات خاطئة</div></div>
+      <div class="rbox na"><div class="n">${unanswered}</div><div class="l">بدون إجابة</div></div>
+    </div>
+    <div class="actionrow">
+      <button class="btn btn-primary" onclick="state.reviewMode=true; render();">مراجعة الإجابات</button>
+      <button class="btn btn-outline-danger" onclick="retakeExam()">إعادة الاختبار</button>
+    </div>
+    `;
+  }
+
+  const items = Q.map((q,i)=>{
+    let tag='na', tagText='بدون إجابة';
+    if(q.answer!==null){ if(q.answer===q.correct){tag='ok';tagText='إجابة صحيحة';} else {tag='bad';tagText='إجابة خاطئة';} }
+    const userAns = q.answer!==null? q.options[q.answer]: '<span style="color:#999">لم تتم الإجابة</span>';
+    const correctAns = q.options[q.correct];
+    return `<div class="review-item">
+      <div class="rtitle"><span class="qnum-badge" style="background:var(--ink-soft)">سؤال ${i+1}</span><span class="rtag ${tag}">${tagText}</span></div>
+      <div class="rq">${q.text}</div>
+      ${q.diagram? q.diagram:''}
+      <div class="rline">إجابتك: <b>${userAns}</b></div>
+      <div class="rline">الإجابة الصحيحة: <b>${correctAns}</b></div>
+      <div class="explain show">${q.explain}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  ${brandbarHtml()}
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+    <h2 style="margin:0;color:var(--teal-deep);font-size:19px;">مراجعة الحل الكاملة</h2>
+    <button class="btn btn-ghost" onclick="state.reviewMode=false; render();">رجوع للنتيجة</button>
+  </div>
+  ${items}
+  <div class="actionrow" style="margin-top:10px;">
+    <button class="btn btn-outline-danger" onclick="retakeExam()">إعادة الاختبار</button>
+  </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
